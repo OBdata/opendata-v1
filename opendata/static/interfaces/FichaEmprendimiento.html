@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Emprendimiento</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  
+  <!-- Custom styles for this page -->
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <img src="obicon.png" style="width: 22%">
+        <div style="padding-top: 20px" class="sidebar-brand-text mx-3">Open Data</div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+          <a class="nav-link" href="">
+          <i class="fas fa-list-ul"></i>
+          <span>Emprendimientos</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+          <a class="nav-link" href="">
+          <i class="far fa-handshake"></i>
+          <span>Actividades</span></a>
+      </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+          <a class="nav-link" href="">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Calendario</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+          <a class="nav-link" href="">
+          <i class="fas fa-users"></i>
+          <span>Usuarios</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Paula Prieto</span>
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Cambiar contraseña
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Open Beauchef</h1>
+          </div>
+
+          
+          <!-- Primera fila-->
+          <div class="row">
+            <div class="col-lg-3">
+              <!-- Logo de emprendimiento -->
+              <img src="wes.jpg" id="imagen-logo" alt="" width="250" height="250"> 
+            </div>
+            <div class="col-lg-4">
+              <!-- Información general -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Información General</h6>
+                </div>
+                <div class="card-body">
+                  <b>Nombre:</b> Perritos<br>
+                  <b>Descripción:</b> Empresa de perritos<br>
+                  <b>Año Creación:</b> 2018<br>
+                  <b>Modelo de Negocios:</b> B2C<br>
+                  <b>Categorías:</b> emprendimiento, aceleracion<br>
+                  <b>Sitios web:</b>  <a href="https://www.facebook.com">www.facebook.com</a> <br>
+                  <br>
+                </div>
+              </div>
+              <!-- Fin Información general -->
+            </div>
+            <div class="col-lg-4">
+              <!-- Información legal -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <b>Programa:</b> SSAF<br>
+                  <b>Representante Legal:</b> Los Cabros SA<br>
+                  <b>RUT Empresa:</b> 76789080-8<br>
+                  <b>Número de trabajadores:</b> 80<br>
+                  <b>Presencia en:</b> Chilezuela<br>
+                  <b>Modelo de ingreso:</b>  Venta de productos <br>
+                  <b>Patente:</b>  Si <br>
+                  <b>Startup o Spinoff:</b> Spinoff<br>
+                  <br>
+                </div>
+              </div> 
+              <!-- Fin Información legal -->
+            </div>
+          </div>
+          <!-- Fin primera fila -->
+          <!-- Inicio descripcion del proyecto -->
+          <div class="row">
+            
+            <div class="col-lg-11">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Descripción del Proyecto</h6  >
+                </div>
+                <div class="card-body">
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <!-- Fin descripcion del proyecto -->
+          <!-- Inicio desafio del proyecto -->
+          <div class="row">
+            <div class="col-lg-11">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Desafío</h6>
+                </div>
+                <div class="card-body">
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <!-- Fin desafio del proyecto -->
+          <!-- Inicio necesidades -->
+          <div class="row">
+            
+            <div class="col-lg-11">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Necesidades</h6>
+                </div>
+                <div class="card-body">
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <!-- Fin necesidades -->
+          <!-- Inicio actividades -->
+          <div class="row">
+            <div class="col-lg-11">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Actividades</h6>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Actividad</th>
+                      <th>Fecha inicio</th>
+                      <th>Fecha término</th>
+                      <th>Lugar</th>
+                      <th>Tipo</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha término</th>
+                        <th>Lugar</th>
+                        <th>Tipo</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr>
+                        <td>Felicidad</td>
+                        <td>10/10/2017</td>
+                        <td>10/10/2017</td>
+                        <td>Auditorio Deltiñi</td>
+                        <td>Seminario</td>
+                    </tr>
+                    <tr>
+                        <td>Carpintería para Loros</td>
+                        <td>11/09/2017</td>
+                        <td>18/09/2017</td>
+                        <td>OpenLab</td>
+                        <td>Taller</td>
+                    </tr>
+                    <tr>
+                        <td>Jugos de amor</td>
+                        <td>09/05/2017</td>
+                        <td>18/09/2017</td>
+                        <td>Auditorio Gorbea</td>
+                        <td>Taller</td>
+                    </tr>
+                    <tr>
+                        <td>Choripanes sin chori</td>
+                        <td>12/03/2017</td>
+                        <td>12/09/2017</td>
+                        <td>Explanada 850</td>
+                        <td>Clase Magistral</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin actividades -->
+          <!-- Inicio reportes -->
+          <div class="row">
+            <div class="col-lg-11">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Reportes</h6>
+                </div>
+                <div class="card-body">
+                  <ul class="nav nav-tabs" id="tabReportes" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="ventas-tab" data-toggle="tab" href="#ventas" role="tab" aria-controls="ventas" aria-selected="true">Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="utilidades-tab" data-toggle="tab" href="#utilidades" role="tab" aria-controls="utilidades" aria-selected="false">Utilidades</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="clientes-tab" data-toggle="tab" href="#clientes" role="tab" aria-controls="clientes" aria-selected="false">Número de clientes</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="trabajadores-tab" data-toggle="tab" href="#trabajadores" role="tab" aria-controls="trabajadores" aria-selected="false">Trabajadores</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="inversiones-tab" data-toggle="tab" href="#inversiones" role="tab" aria-controls="inversiones" aria-selected="false">Capital levantado</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="inversiones-tab" data-toggle="tab" href="#inversiones" role="tab" aria-controls="inversiones" aria-selected="false">Assesment</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="pestanaReportes">
+                    <div class="tab-pane fade show active" id="ventas" role="tabpanel" aria-labelledby="ventas-tab">
+                      <div class="card mb-4">
+                        <div class="card-body">
+                          <div class="chart-area">
+                            <canvas id="myAreaChart"></canvas>
+                          </div>  
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="utilidades" role="tabpanel" aria-labelledby="utilidades-tab">
+                      <div class="card mb-4">
+                        <div class="card-body">
+                          <div class="chart-bar">
+                            <canvas id="myBarChart"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="clientes" role="tabpanel" aria-labelledby="clientes-tab">
+                      <div class="card mb-4">
+                        <div class="card-body">
+                          <div class="chart-bar">
+                            <canvas id="myPieChart"></canvas>
+                          </div>  
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="trabajadores" role="tabpanel" aria-labelledby="trabajadores-tab">
+                      <div class="card mb-4">
+                        <div class="card-body">
+                           <table class="table table-bordered" id="actividadesTable" width="100%" cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Profesión</th>
+                                <th>Sueldo</th>
+                                <th>Tipo</th>
+                              </tr>
+                            </thead>
+                            <tfoot>
+                              <tr>
+                                <th>Fernando Nowajewski</th>
+                                <th>Dios</th>
+                                <th>Ingeniero Industrial</th>
+                                <th>$100000</th>
+                                <th></th>
+                              </tr>
+                            </tfoot>
+                            <tbody>
+                              <tr>
+                                <td>Felicidad</td>
+                                <td>10/10/2017</td>
+                                <td>10/10/2017</td>
+                                <td>Auditorio Deltiñi</td>
+                                <td>Seminario</td>
+                              </tr>
+                              <tr>
+                                <td>Carpintería para Loros</td>
+                                <td>11/09/2017</td>
+                                <td>18/09/2017</td>
+                                <td>OpenLab</td>
+                                <td>Taller</td>
+                              </tr>
+                              <tr>
+                                <td>Jugos de amor</td>
+                                <td>09/05/2017</td>
+                                <td>18/09/2017</td>
+                                <td>Auditorio Gorbea</td>
+                                <td>Taller</td>
+                              </tr>
+                              <tr>
+                                <td>Choripanes sin chori</td>
+                                <td>12/03/2017</td>
+                                <td>12/09/2017</td>
+                                <td>Explanada 850</td>
+                                <td>Clase Magistral</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin reportes -->
+          <!-- Inicio añadir informacion -->
+          <div class="row">
+            <div class="col-lg-11">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Añadir Información</h6>
+                </div>
+                <div class="card-body">
+                  <div class="accordion" id="accordionExample">
+                    <!-- Nuevo trabajador -->
+                    <div class="card">
+                      <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Nuevo Trabajador
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <form>
+
+                            <div class="row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Nombre:</b><br>
+                              </div>
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Apellido:</b><br>
+                              </div>
+                              
+                            </div>
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <input type="text" class="form-control" id="nombre-trabajador">
+                              </div>
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <input type="text" class="form-control" id="apellido-trabajador">
+                                <br>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Cargo:</b><br>
+                              </div>
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Profesión:</b><br>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <input type="text" class="form-control" id="cargo-trabajador">
+                              </div>
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <input type="text" class="form-control" id="profesion-trabajador">
+                                <br>
+                              </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Tipo de Contrato:</b><br>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio1" name="contrato-trabajador" class="custom-control-input" value="1">
+                                  <label class="custom-control-label" for="customRadio1">Contrato</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio2" name="contrato-trabajador" class="custom-control-input" value="2">
+                                  <label class="custom-control-label" for="customRadio2">Honorario</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio3" name="contrato-trabajador" class="custom-control-input" value="3">
+                                  <label class="custom-control-label" for="customRadio3">Sin contrato</label>
+                                </div>
+                                <br>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Horas dedicadas:</b><br>
+                              </div>
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Sueldo:</b><br>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <input type="text" class="form-control" id="horas-trabajador">
+                              </div>
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <input type="text" class="form-control" id="sueldo-trabajador">
+                                <br>
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Vínculo UChile</b><br>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio4" name="vinculo-uchile" class="custom-control-input" value="1">
+                                  <label class="custom-control-label" for="customRadio4" >Alumno pregrado</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio5" name="vinculo-uchile" class="custom-control-input" value="2">
+                                  <label class="custom-control-label" for="customRadio5" >Alumno postgrado</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio6" name="vinculo-uchile" class="custom-control-input" value="3">
+                                  <label class="custom-control-label" for="customRadio6" >Ex alumno</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio7" name="vinculo-uchile" class="custom-control-input" value="4">
+                                  <label class="custom-control-label" for="customRadio7" >Docente</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio8" name="vinculo-uchile" class="custom-control-input" value="5">
+                                  <label class="custom-control-label" for="customRadio8" >Funcionario</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                  <input type="radio" id="customRadio9" name="vinculo-uchile" class="custom-control-input" value="6">
+                                  <label class="custom-control-label" for="customRadio9" >Sin vínculo</label>
+                                </div>
+                                <br>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-4">
+                                <b>Facultad UChile</b>
+                                  <select class="form-control" id="facultad-uchile">
+                                    <option value="0">Seleccione facultad...</option>
+                                    <option value="1">Arquitectura y Urbanismo</option>
+                                    <option value="2">Artes</option>
+                                    <option value="3">Ciencias Físicas y Matemáticas</option>
+                                    <option value="4">Economía y Negocios</option>
+                                    <option value="5">Ciencias</option>
+                                    <option value="6">Ciencias Agronómicas</option>
+                                    <option value="7">Ciencias Forestales y de la Conservación de la Naturaleza</option>
+                                    <option value="8">Ciencias Químicas y Farmaceúticas</option>
+                                    <option value="9">Ciencias Sociales</option>
+                                    <option value="10">Ciencias Veterinarias y Pecuarias</option>
+                                    <option value="11">Derecho</option>
+                                    <option value="12">Filosofía y Humanidades</option>
+                                    <option value="13">Medicina</option>
+                                    <option value="14">Odontología</option>
+                                    <option value="15">Instituto de Asuntos Públicos</option>
+                                    <option value="16">Instituto de Comunicación e Imagen</option>
+                                    <option value="17">Instituto de Estudios Internacionales</option>
+                                    <option value="18">Instituto de Nutrición y Tecnología de los Alimentos</option>
+                                  </select>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Fin Nuevo Trabajador -->
+                    <div class="card">
+                      <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Nueva Venta
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <form>
+                            <div class="row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-3">
+                                <b>Monto:</b><br>
+                              </div>
+                              
+                              <div class="col-lg-3">
+                                <b>Mes:</b><br>
+                              </div>
+                              <div class="col-lg-3">
+                                <b>Año:</b><br>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-3">
+                                <input type="text" class="form-control" id="monto-venta">
+                              </div>
+                              
+                              <div class="col-lg-3">
+                                <select class="form-control" id="mes-venta">
+                                  <option>Seleccione mes...</option>
+                                  <option value="1">Enero</option>
+                                  <option value="2">Febrero</option>
+                                  <option value="3">Marzo</option>
+                                  <option value="4">Abril</option>
+                                  <option value="5">Mayo</option>
+                                  <option value="6">Junio</option>
+                                  <option value="7">Julio</option>
+                                  <option value="8">Agosto</option>
+                                  <option value="9">Septiembre</option>
+                                  <option value="10">Octubre</option>
+                                  <option value="11">Noviembre</option>
+                                  <option value="12">Diciembre</option>
+                                </select>
+                                <br>
+                              </div>
+                              <div class="col-lg-3">
+                                <select class="form-control" id="ano-venta">
+                                  <option>Seleccione año...</option>
+                                  <option value="2019">2019</option>
+                                  <option value="2020">2020</option>
+                                  <option value="2021">2021</option>
+                                  <option value="2022">2022</option>
+                                  <option value="2023">2023</option>
+                                </select>
+                                <br>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <div class="col-lg-1">
+                              </div>
+                              <div class="col-lg-3">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Nuevo Costo
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <form>
+                          <div class="row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <b>Monto:</b><br>
+                            </div>
+                            
+                            <div class="col-lg-3">
+                              <b>Mes:</b><br>
+                            </div>
+                            <div class="col-lg-3">
+                              <b>Año:</b><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <input type="number" step="1000" class="form-control" name="monto-costo">
+                            </div>
+                            
+                            <div class="col-lg-3">
+                              <select class="form-control" id="mes-costo">
+                                <option>Seleccione mes...</option>
+                                <option>Enero</option>
+                                <option>Febrero</option>
+                                <option>Marzo</option>
+                                <option>Abril</option>
+                                <option>Mayo</option>
+                                <option>Junio</option>
+                                <option>Julio</option>
+                                <option>Agosto</option>
+                                <option>Septiembre</option>
+                                <option>Octubre</option>
+                                <option>Noviembre</option>
+                                <option>Diciembre</option>
+                              </select>
+                              <br>
+                            </div>
+                            <div class="col-lg-3">
+                              <select class="form-control" id="ano-costo">
+                                <option>Seleccione año...</option>
+                                <option>2019</option>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingFour">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Nueva Patente
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <b>ID:</b><br>
+                            </div>
+                            
+                            <div class="col-lg-3">
+                              <b>Nombre:</b><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <input type="text" class="form-control" name="id-patente">
+                            </div>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" name="nombre-patente">
+                              <br>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingFive">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Nueva Inversión
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <form>
+                          <div class="row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <b>Monto:</b><br>
+                            </div>
+                            
+                            <div class="col-lg-3">
+                              <b>Mes:</b><br>
+                            </div>
+                            <div class="col-lg-3">
+                              <b>Año:</b><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <input type="number" step="1000" class="form-control" name="monto-costo">
+                            </div>
+                            
+                            <div class="col-lg-3">
+                              <select class="form-control" id="mes-costo">
+                                <option value="">Mes</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                              </select>
+                              <br>
+                            </div>
+                            <div class="col-lg-3">
+                              <select class="form-control" id="ano-costo">
+                                <option value="">Año</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <b>Tipo de Inversión</b><br>
+                              <div class="custom-control custom-radio">
+                                <input type="radio" id="inversionPublica" name="tipo-inversion" class="custom-control-input">
+                                <label class="custom-control-label" for="inversionPublica">Pública</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input type="radio" id="inversionPrivada" name="tipo-inversion" class="custom-control-input">
+                                <label class="custom-control-label" for="inversionPrivada">Privada</label>
+                              </div>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <b>Nombre organización:</b><br>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                              <b>Nombre fondo:</b><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" name="organizacion-fondo">
+                            </div>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" name="nombre-fondo">
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingSix">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Nuevo Assesment
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <form>
+                          <!-- Equipo -->
+                          <div class="row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <b>Equipo:</b><br><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Dedicación del equipo al negocio
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Balance del equipo emprendedor
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Nivel de formación
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Experiencia relevante para el negocio, conocimiento de la industria
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Experiencia previa en el desarrollo de emprendimientos
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                  Anotaciones sobre "Capacidad y competencias del equipo emprendedor"
+                                </font>
+                                <br><br>
+                                <textarea class="form-control" rows="4" cols="59"></textarea>
+                              </ul>
+
+                            </div>
+                          </div>
+                          <!-- Fin equipo -->
+
+                          <!-- Mercado -->
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <br>
+                              <b>Mercado:</b><br><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Tamaño de mercado
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Acceso al mercado
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Tendencias de crecimiento
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Necesidad insatisfecha (oportunidad de negocio)
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-4">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Barreras de entrada
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="equipo-5">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                  Anotaciones sobre "Oportunidad de mercado"
+                                </font>
+                                <br><br>
+                                <textarea class="form-control" rows="4" cols="59" id="equipo-6"></textarea>
+                              </ul>
+
+                            </div>
+                          </div>
+                          <!-- Fin Mercado -->
+                          <!-- Modelo de negocios -->
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <br>
+                              <b>Modelo de negocios:</b><br><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Claridad en los procesos (producción, comercialización, cobranza, adquicisiones)
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="modelo-1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Tiempo al mercado de los productos/servicios (time to market)
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="modelo-2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Escalabilidad del negocio
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="modelo-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Estrategia comercial global del negocios
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="modelo-4">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Sustentabilidad del modelo de negocios
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="modelo-5">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                  Anotaciones sobre "Capacidad y competencias del equipo emprendedor"
+                                </font>
+                                <br><br>
+                                <textarea class="form-control" rows="4" cols="59" id="modelo-6"></textarea>
+                              </ul>
+
+                            </div>
+                          </div>
+                          <!-- Fin Modelo de negocios -->
+                          <!-- Tecnologia -->
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <br>
+                              <b>Tecnología:</b><br><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Ventaja competitiva de los productos/servicios (grado de diferenciación)
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="tecnologia-1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Factibilidad industrial
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="tecnologia-2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Variedad de campos de aplicación
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="tecnologia-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Propiedad intelectual (patente/know how)
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="tecnologia-4">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Estado de desarrollo tecnológico
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="tecnologia-5">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                  Anotaciones sobre Diferenciación: Tecnología / Legal
+                                </font>
+                                <br><br>
+                                <textarea class="form-control" rows="4" cols="59" id="tecnologia-6"></textarea>
+                              </ul>
+
+                            </div>
+                          </div>
+                          <!-- Fin Tecnologia -->
+                          <!-- Finanzas -->
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-4">
+                              <br>
+                              <b>Finanzas:</b><br><br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Proyecciones realistas
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="finanzas-1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Flujo de caja (VAN, TIR, Payback)
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="finanzas-2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Retorno de inversión a 5 años
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="finanzas-3">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Capital requerido versus valor del negocio
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="finanzas-4">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                Estrategia de salida por inversionistas 
+                                </font>
+                              </ul>
+                            </div>
+                            <div class="col-lg-1">
+                              <select class="form-control form-control-sm" id="finanzas-5">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                              <br>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-9">
+                              <ul>
+                                <font size="3">
+                                  Anotaciones sobre "Finanzas"
+                                </font>
+                                <br><br>
+                                <textarea class="form-control" rows="4" cols="59" id="finanzas-6"></textarea>
+                              </ul>
+                            </div>
+                          </div>
+                          <!-- Fin Finanzas -->
+                          <div class="form-group row">
+                            <div class="col-lg-1">
+                            </div>
+                            <div class="col-lg-3">
+                              <br>
+                              <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin añadir informacion -->
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/chart-area-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>
+  <script src="js/demo/chart-bar-demo.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>

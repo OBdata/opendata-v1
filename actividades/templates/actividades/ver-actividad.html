@@ -1,0 +1,556 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block specific_css %}
+    <!-- Custom styles for this page -->
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+          xmlns:width="http://www.w3.org/1999/xhtml">
+{% endblock specific_css %}
+
+
+{% block content %}
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                             aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small"
+                                           placeholder="Search for..." aria-label="Search"
+                                           aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
+                            <img class="img-profile rounded-circle"
+                                 src="{% static 'img/default-user.jpg' %}">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="{% url 'personas:contrasena' %}">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Cambiar Contraseña
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Salir
+                            </a>
+                        </div>
+                    </li>
+                    {% endif %}
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            {% if success %}
+            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>La anotación ha sido ingresada exitosamente!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">{{ actividad.nombre }}</h1>
+                    {% if not actividad.terminada or user.is_staff %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                            data-target="#editarInfoActividad">Editar</button>
+
+                    {% else %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>actividad finalizada</i>
+                    {% endif %}
+                </div>
+
+
+                <div class="modal fade" id="editarInfoActividad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog"  role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Editar información de actividad</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                    <form action="/actividades/{{ actividad.id }}/editar_informacion/" method="post">
+                                      {% csrf_token %}
+                                      <div class="modal-body">
+                                        (*) Campos obligatorios
+                                          <div class="row">&nbsp;</div>
+                                        <div class="form-group row">
+                                        <div class="col-form-label col-lg-3">
+                                            * Nombre:
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <input type="text" class="form-control" id="nombre-actividad"
+                                                   name="nombre-actividad" placeholder="Nombre"
+                                                   value="{{ actividad.nombre }}" required>
+                                        </div>
+                                        </div>
+                                        <div class="form-group row">
+                                        <div class="col-form-label col-lg-3">
+                                            Lugar:
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <input type="text" class="form-control" id="lugar-actividad"
+                                                   name="lugar-actividad"
+                                                   value="{{ actividad.lugar }}" >
+                                        </div>
+                                        </div>
+                                          <div class="form-group row">
+                                        <div class="col-form-label col-lg-3">
+                                            * Fecha y hora de inicio:
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="date" class="form-control" id="fecha-inicio-actividad"
+                                                   name="fecha-inicio-actividad" placeholder="Fecha de actividad"
+                                                   value="{{ actividad.fecha_inicial|date:"Y-m-d" }}" required>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="time" class="form-control" id="hora-inicio-actividad"
+                                            name="hora-inicio-actividad"
+                                                   value="{{ actividad.fecha_inicial|time }}" required>
+                                        </div>
+                                        </div>
+                                         <div class="form-group row">
+                                        <div class="col-form-label col-lg-3">
+                                            Fecha y hora de fin:
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="date" class="form-control" id="fecha-fin-actividad"
+                                                   name="fecha-fin-actividad" placeholder="Fecha de actividad"
+                                                   value="{{ actividad.fecha_termino|date:"Y-m-d" }}">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="time" class="form-control" id="hora-fin-actividad"
+                                            name="hora-fin-actividad"
+                                                   value="{{ actividad.fecha_termino|time }}">
+                                        </div>
+                                        </div>
+                                        <div class="form-group row">
+                                        <div class="col-form-label col-lg-3">
+                                            Descripción:
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <textarea class="form-control" id="descripcion-actividad"
+                                                      name="descripcion-actividad" rows="3">{{ actividad.descripcion }}</textarea>
+                                        </div>
+                                        </div>
+                                        <div class="form-group row">
+
+                                            <div class="col-form-label col-lg-3">
+                                                * Tipo de actividad:
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label for="facultad-uchile"></label>
+                                                <select required class="form-control" name="tipo-actividad"
+                                                    id="facultad-uchile">
+                                                    <option value="Mentorías">
+                                                        Mentorías
+                                                    </option>
+                                                    <option value="Reunión de Seguimiento">
+                                                        Reunión de Seguimiento
+                                                    </option>
+                                                    <option value="Taller">
+                                                        Taller
+                                                    </option>
+                                                    <option value="Demoday">
+                                                        Demoday
+                                                    </option>
+                                                    <option value="Comité">
+                                                        Comité
+                                                    </option>
+                                                    <option value="Networking">
+                                                        Networking
+                                                    </option>
+                                                    <option value="Evento">
+                                                        Evento
+                                                    </option>
+                                                    <option value="Hito">
+                                                        Hito
+                                                    </option>
+                                                    <option value="Otro">
+                                                        Otro
+                                                    </option>
+        
+                                                </select>
+                                                <br>
+                                                <input type="hidden" name="ejecId" id="ejecId" value="{{ user.id }}">
+        
+                                            </div>
+        
+        
+        
+                                        </div>
+                                      </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                <!-- DataTales Example -->
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            Nombre:
+                                        </div>
+                                        <div class="col-lg-5">
+                                            {{ actividad.nombre }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            Lugar:
+                                        </div>
+                                        <div class="col-lg-5">
+                                            {{ actividad.lugar }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            Fecha y hora de inicio:
+                                        </div>
+                                        <div class="col-sm-3">
+                                            {{ actividad.fecha_inicial }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            Fecha y hora de término:
+                                        </div>
+                                        <div class="col-sm-3">
+                                            {% if a.fecha_termino is not None %} {{ a.fecha_termino }} {% else %} {% endif %}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            Descripción:
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <p>{{ actividad.descripcion|linebreaks }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-2">
+                                            Tipo de actividad:
+                                        </div>
+                                        <div class="col-lg-6">
+                                            {{ actividad.tipo }}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <form method="post" action="/actividades/{{ actividad.id }}/guardar_nota/">
+                                        {% csrf_token %}
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <div class="card mb-4">
+                                                    <div class="card-header">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Anotaciones del Evento
+                                                        </h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <textarea class="form-control" id="anotacion-actividad"
+                                                            name="anotacion-actividad" rows="10" required></textarea>
+                                                        <input type="hidden" name="ejecId" id="ejecId" value="{{ user.id }}">
+                                                        <input type="hidden" name="actId" id="actId" value="{{ actividad.id }}">
+                                                        <br>    
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-10">
+                                                                <button id="submit-button" type="submit" class="btn btn-primary">
+                                                                    Enviar Anotación
+                                                                </button>
+                                                            </div>
+                                                        </div>    
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                            </div>    
+                                        </div>
+                                    </form>
+
+                                    
+                                        {% if not actividad.terminada %}
+                                        <form method="post" action="/actividades/{{ actividad.id }}/nuevas_invitaciones/">
+                                        {% csrf_token %}
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <div class="card mb-4">
+                                                    <div class="card-header">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Emprendimientos invitados
+                                                        </h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="dataTable" width="100%"
+                                                                cellspacing="0">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Nombre Emprendimiento</th>
+                                                                    <th>¿Invitar?</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tfoot>
+                                                                <tr>
+                                                                    <th>Nombre Emprendimiento</th>
+                                                                    <th>¿Invitar?</th>
+                                                                </tr>
+                                                                </tfoot>
+
+                                                                <tbody>
+                                                                {% for i in invitados %}
+                                                                <tr>
+                                                                    <td>{{ i.emprendimiento.nombre }}</td>
+                                                                    <td>
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                class="custom-control-input"
+                                                                                id="invitar-emp-{{ i.emprendimiento.id }}"
+                                                                                name="invitar-emp-{{ i.emprendimiento.id }}"
+                                                                                {% if i.invitado %} checked {% endif %}>
+                                                                            <label class="custom-control-label"
+                                                                                for="invitar-emp-{{ i.emprendimiento.id }}"></label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                {% endfor %}
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary">Guardar nuevos invitados
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        </form>
+                                        {% else %}
+                                            <h1 class="py-4">Emprendimientos Invitados</h1>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Nombre Emprendimiento</th>
+                                                        <th>Previamente invitado</th>
+                                                        <th>Asistencia</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <th>Nombre Emprendimiento</th>
+                                                        <th>Previamente invitado</th>
+                                                        <th>Asistencia</th>
+                                                    </tr>
+                                                    </tfoot>
+                                                    <tbody>
+                                                    {% for i in invitados %}
+                                                    <tr>
+                                                        <th>{{ i.emprendimiento.nombre }}</th>
+                                                        <th>{% if i.invitado %}Sí{% else %}No{% endif %}</th>
+                                                        <th>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input"
+                                                                    id="{{i.id}}" {% if i.estado %} checked {% endif %}>
+                                                                <label class="custom-control-label" for="{{i.id}}"></label>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        {% endif %}
+
+                                    
+
+                                <!--
+                                <form>
+                                    <div class="form-group">
+                                      <label for="exampleInputnombre1">Nombre de la Actividad</label>
+                                      <input type="text" class="form-control" id="exampleInputnombre1" aria-describedby="nombreHelp" placeholder="Ingrese nombre">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputnombre1">Lugar</label>
+                                        <input type="text" class="form-control" id="exampleInputnombre1" aria-describedby="nombreHelp" placeholder="Ingrese lugar">
+                                      </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputfecha1">Fecha de Inicio</label>
+                                        <input type="date" class="form-control" id="exampleInputfecha1" placeholder="fecha">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="exampleInputfecha1">Fecha de Finalización</label>
+                                      <input type="date" class="form-control" id="exampleInputfecha1" placeholder="fecha">
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="exampleInputmonitor1">Descripción</label>
+                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                      <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                      <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                                     </div>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+
+                                </form>
+                                -->
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Open Beauchef 2020</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Quieres cerrar sesión?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Selecciona "Salir" para cerrar la sesión.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="{% url 'personas:salir' %}">Salir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block specific_js %}
+    <script>
+        $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
+            $("#success-alert").slideUp(500);
+        });
+        $('.popover-dismiss').popover({
+            trigger: 'focus'
+        });
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        });
+    </script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+    <script>
+        $("#dataTable input:checkbox").change(function() {
+            var checked = $(this).is(":checked");
+            var as_id = $(this).attr("id");
+
+            $.ajax({
+                url: 'actualizar_asistencia/',
+                data: {
+                    'checked': checked,
+                    'as_id': as_id
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                }
+            });
+        });
+    </script>
+
+{% endblock specific_js %}

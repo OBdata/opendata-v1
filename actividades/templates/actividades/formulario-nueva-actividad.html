@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block specific_css %}
+<!-- Custom styles for this page -->
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock specific_css %}
+
+
+{% block content %}
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                <li class="nav-item dropdown no-arrow d-sm-none">
+                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search fa-fw"></i>
+                    </a>
+                    <!-- Dropdown - Messages -->
+                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                        aria-labelledby="searchDropdown">
+                        <form class="form-inline mr-auto w-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0 small"
+                                    placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+                {% if user.is_authenticated %}
+                <div class="topbar-divider d-none d-sm-block"></div>
+
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}}
+                            {{user.last_name}}</span>
+                        <img class="img-profile rounded-circle" src="{% static 'img/default-user.jpg' %}">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{% url 'personas:contrasena' %}">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Cambiar Contraseña
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Salir
+                        </a>
+                    </div>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">
+                Nueva Actividad
+            </h1>
+
+            <!-- DataTales Example -->
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <form method="post" action="/actividades/agregar_nueva/">
+                                <p>(*) Campo obligatorio</p>
+                                {% csrf_token %}
+                                <div class="form-group row">
+                                    <div class="col-form-label col-lg-2">
+                                        * Nombre:
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="nombre-nueva-actividad"
+                                            name="nombre-nueva-actividad" placeholder="Nombre" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-form-label col-lg-2">
+                                        Lugar:
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="lugar-nueva-actividad"
+                                            name="lugar-nueva-actividad" placeholder="Lugar">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-form-label col-lg-2">
+                                        * Fecha y hora de inicio:
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="date" class="form-control" id="fecha-inicio-actividad"
+                                            name="fecha-inicio-actividad" placeholder="Fecha de actividad" required>
+                                        <span id="error-fecha-inicio"></span>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="time" class="form-control" id="hora-inicio-actividad"
+                                            name="hora-inicio-actividad" required>
+                                        <span id="error-hora-inicio"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-form-label col-lg-2">
+                                        Fecha y hora de término:
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="date" class="form-control" id="fecha-fin-actividad"
+                                            name="fecha-fin-actividad" placeholder="Fecha de término">
+                                        <span id="error-fecha-fin"></span>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="time" class="form-control" id="hora-fin-actividad"
+                                            name="hora-fin-actividad">
+                                        <span id="error-hora-fin"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-form-label col-lg-2">
+                                        Descripción:
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" id="descripcion-actividad"
+                                            name="descripcion-actividad" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+
+                                    <div class="col-form-label col-lg-2">
+                                        * Tipo de actividad:
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="facultad-uchile"></label>
+                                        <select required class="form-control" name="tipo-actividad"
+                                            id="facultad-uchile">
+                                            <option value="Mentorías">
+                                                Mentorías
+                                            </option>
+                                            <option value="Reunión de Seguimiento">
+                                                Reunión de Seguimiento
+                                            </option>
+                                            <option value="Taller">
+                                                Taller
+                                            </option>
+                                            <option value="Demoday">
+                                                Demoday
+                                            </option>
+                                            <option value="Comité">
+                                                Comité
+                                            </option>
+                                            <option value="Networking">
+                                                Networking
+                                            </option>
+                                            <option value="Evento">
+                                                Evento
+                                            </option>
+                                            <option value="Hito">
+                                                Hito
+                                            </option>
+                                            <option value="Otro">
+                                                Otro
+                                            </option>
+
+                                        </select>
+                                        <br>
+                                        <input type="hidden" name="ejecId" id="ejecId" value="{{ user.id }}">
+
+                                    </div>
+
+
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h6 class="m-0 font-weight-bold text-primary">Invitar
+                                                    emprendimientos</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="dataTable" width="100%"
+                                                        cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Nombre Emprendimiento</th>
+                                                                <th>¿Invitar?</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Nombre Emprendimiento</th>
+                                                                <th>¿Invitar?</th>
+                                                            </tr>
+                                                        </tfoot>
+
+                                                        <tbody>
+                                                            {% for e in emprendimientos %}
+                                                            <tr>
+                                                                <td>{{ e.nombre }}</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox"
+                                                                            class="custom-control-input"
+                                                                            id="invitar-emp-{{ e.id }}"
+                                                                            name="invitar-emp-{{ e.id }}">
+                                                                        <label class="custom-control-label"
+                                                                            for="invitar-emp-{{ e.id }}"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-10">
+                                        <button id="submit-button" type="submit" class="btn btn-primary">Guardar nueva
+                                            actividad
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Open Beauchef 2020</span>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Quieres cerrar sesión?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Selecciona "Salir" para cerrar la sesión.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-primary" href="{% url 'personas:salir' %}">Salir</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block specific_js %}
+
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+<script>
+
+    function resetErrors() {
+        document.getElementById("error-fecha-inicio").innerHTML = '';
+        document.getElementById("error-fecha-fin").innerHTML = '';
+        document.getElementById("error-hora-inicio").innerHTML = '';
+        document.getElementById("error-hora-fin").innerHTML = '';
+        document.getElementById("submit-button").disabled = false;
+    }
+
+
+    var ini = 0;
+    var fin = 0;
+    var start = Date();
+    var end = Date();
+
+    var hini = 0;
+    var hfin = 0;
+    var hstart = Date();
+    var hend = Date()
+
+    $('#fecha-inicio-actividad').on('change', function () {
+        ini = $('#fecha-inicio-actividad').val()
+        start = new Date(ini);
+        if (end < start) {
+            document.getElementById("error-fecha-inicio").innerHTML = 'Debe ser anterior a fecha de fin';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else if (end.valueOf() == start.valueOf() && hend < hstart) {
+            document.getElementById("error-hora-fin").innerHTML = 'Debe ser posterior a hora de inicio';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else {
+            resetErrors();
+        }
+
+    });
+
+    $('#fecha-fin-actividad').on('change', function () {
+        fin = $('#fecha-fin-actividad').val()
+        end = new Date(fin);
+        if (end < start) {
+            document.getElementById("error-fecha-fin").innerHTML = 'Debe ser posterior a fecha de inicio';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else if (end.valueOf() == start.valueOf() && hend < hstart) {
+            document.getElementById("error-hora-fin").innerHTML = 'Debe ser posterior a hora de inicio';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else {
+            resetErrors();
+        }
+    });
+
+    $('#hora-inicio-actividad').on('change', function () {
+        hini = $('#hora-inicio-actividad').val()
+        hstart = Date.parse("01/01/2001 ".concat(hini))
+        if (end.valueOf() == start.valueOf() && hend < hstart) {
+            document.getElementById("error-hora-inicio").innerHTML = 'Debe ser anterior a hora de fin';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else if (end.valueOf() < start.valueOf()) {
+            document.getElementById("error-fecha-fin").innerHTML = 'Debe ser posterior a fecha de inicio';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else {
+            resetErrors();
+        }
+    });
+
+    $('#hora-fin-actividad').on('change', function () {
+        hfin = $('#hora-fin-actividad').val()
+        hend = Date.parse("01/01/2001 ".concat(hfin))
+        if (end.valueOf() == start.valueOf() && hend < hstart) {
+            document.getElementById("error-hora-fin").innerHTML = 'Debe ser posterior a fecha de inicio';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else if (end.valueOf() < start.valueOf()) {
+            document.getElementById("error-fecha-fin").innerHTML = 'Debe ser posterior a fecha de inicio';
+            document.getElementById("submit-button").disabled = true;
+        }
+        else {
+            resetErrors();
+        }
+    });
+
+</script>
+
+{% endblock specific_js %}

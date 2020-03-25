@@ -1,0 +1,2427 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block specific_css %}
+<!-- Custom styles for this page -->
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock specific_css %}
+
+{% block content %}
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <div class="topbar-divider d-none d-sm-block"></div>
+
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}
+                            {{ user.last_name }}</span>
+                        <img class="img-profile rounded-circle" src="{% static 'img/default-user.jpg' %}">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{% url 'personas:contrasena' %}">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Cambiar Contraseña
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Salir
+                        </a>
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">{{ emprendimiento.nombre }}</h1>
+            </div>
+
+            {% if success %}
+            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Tu entrada ha sido ingresada exitosamente!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+
+            <!-- Para el futuro
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Hubo un error. No pudimos procesar tu entrada</strong> 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+
+
+            <!-- Primera fila-->
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- Logo de emprendimiento -->
+                    <img src="/media/logos/{{ emprendimiento.foto_perfil }}" id="imagen-logo" alt="" width="250" height="250">
+                </div>
+                <div class="col-lg-8">
+                    <!-- Información general -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Información
+                                General&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </h6>
+                            <button
+                                type="button" style="margin-left: 90%;" class="btn btn-primary" data-toggle="modal"
+                                data-target="#editarInfo">Editar
+                            </button>
+                        </div>
+                        <div class="modal fade" id="editarInfo" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Editar información</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/ficha/guardar_informacion/" method="post" enctype='multipart/form-data'>
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            (*) Campos obligatorios
+                                            <div row>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <b>*Nombre: </b><input required type="text" class="form-control"
+                                                            name="nombre-emp" id="nombre-emp"
+                                                            value="{{ emprendimiento.nombre }}">
+                                                        <br>
+                                                        <b>Descripción: </b><input type="text" class="form-control"
+                                                            name="descripcion-corta" id="descripcion-corta"
+                                                            value="{{ emprendimiento.descripcion_corta }}">
+                                                        <br>
+                                                        <b>Ubicación: </b><input type="text" class="form-control"
+                                                            name="ubicacion-emp" id="ubicacion-emp"
+                                                            value="{{ emprendimiento.ubicacion }}">
+                                                        <br>
+                                                        <b>*Año de creación: </b><input required type="text" max="9999"
+                                                            class="form-control" name="ano-creacion" id="ano-creacion"
+                                                            value="{{ emprendimiento.ano_creacion }}">
+                                                        <br>
+                                                        <b>*Ingreso a OpenBeauchef: </b><input required type="date"
+                                                            class="form-control" name="fecha-ingreso" id="fecha-ingreso"
+                                                            value="{{ emprendimiento.fecha_de_ingreso|date:"Y-m-d" }}">
+                                                        <br>
+                                                        <b>Modelo de negocios: </b>
+                                                        
+                                                            <div>
+                                                                <select class="form-control" name="modelo-negocios"
+                                                                    id="modelo-negocios">
+                                                                    <option value="B2B">
+                                                                        B2B
+                                                                    </option>
+                                                                    <option value="B2C">
+                                                                        B2C
+                                                                    </option>
+                                                                    <option value="Otro">
+                                                                        Otro
+                                                                    </option>
+                                                                    
+                                                                </select>
+                                                    
+                        
+                                                            </div>
+                                                        
+                                                        <br>
+                                                        <b>Categorías: </b>
+                                                        <div>
+                                                            <select class="form-control" name="categorias-emp"
+                                                                id="categorias-emp">
+                                                                <option value="Agronomía">
+                                                                    Agronomía
+                                                                </option>
+                                                                <option value="BIM">
+                                                                    BIM
+                                                                </option>
+                                                                <option value="CleanTech">
+                                                                    CleanTech
+                                                                </option>
+                                                                <option value="Deporte">
+                                                                    Deporte
+                                                                </option>
+                                                                <option value="EduTech">
+                                                                    EduTech
+                                                                </option>
+                                                                <option value="Hardware">
+                                                                    Hardware
+                                                                </option>
+                                                                <option value="IoT">
+                                                                    IoT
+                                                                </option>
+                                                                <option value="Manufactura">
+                                                                    Manufactura
+                                                                </option>
+                                                                <option value="Minería">
+                                                                    Minería
+                                                                </option>
+                                                                <option value="Mobile App">
+                                                                    Mobile App
+                                                                </option>
+                                                                <option value="SaaS">
+                                                                    SaaS
+                                                                </option>
+                                                                <option value="Salud">
+                                                                    Salud
+                                                                </option>
+                                                                <option value="SmartCity">
+                                                                    SmartCity
+                                                                </option>
+                                                                <option value="Software">
+                                                                    Software
+                                                                </option>
+                                                                <option value="Social Media Analytics">
+                                                                    Social Media Analytics
+                                                                </option>
+                                                                <option value="Otro">
+                                                                    Otro
+                                                                </option>
+                                                                
+                                                            </select>
+                                                
+                    
+                                                        </div>
+                                                        <br>
+                                                        <b>Sitio web: </b><input type="text" class="form-control"
+                                                            name="sitio-web" id="sitio-web"
+                                                            value="{{ emprendimiento.sitio_web }}">
+                                                        <br>
+
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <b>Logo: </b><input type="file" class="form-control"
+                                                            name="logo-emp" id="logo-emp">
+                                                        <br>
+                                                        <b>Programa: </b>
+                                                        
+
+                                                            <div>
+                                                                <select class="form-control" name="programa-emp"
+                                                                    id="facultad-uchile">
+                                                                    <option value="Aceleración">
+                                                                        Aceleración
+                                                                    </option>
+                                                                    <option value="SSAF Construcción">
+                                                                        SSAF Construcción
+                                                                    </option>
+                                                                    <option value="SSAF SmartCity">
+                                                                        SSAF SmartCity
+                                                                    </option>
+                                                                    <option value="Semilla Inicia 2020">
+                                                                        Semilla Inicia 2020
+                                                                    </option>
+                                                                    <option value="Semilla Expande 2020">
+                                                                        Semilla Expande 2020
+                                                                    </option>
+                                                                    <option value="Otro">
+                                                                        Otro
+                                                                    </option>
+                        
+                                                                </select>
+                                                    
+                        
+                                                            </div>
+                                                            <!-- <div class="input-group-prepend">
+
+                                                                <button id="popverID" type="button"
+                                                                    class="btn btn-primary" data-container="body"
+                                                                    data-trigger="focus" data-toggle="popover"
+                                                                    data-placement="bottom"
+                                                                    data-content="Ingresar el programa al que pretenece.">
+                                                                    ?
+                                                                </button id>
+                                                            </div>
+                                                            <input type="text" class="form-control"
+                                                                name="programa-emp" id="programa-emp"
+                                                                value="{{ emprendimiento.programa }}"> -->
+                                                       
+                                                        <br>
+                                                        <b>Representante legal: </b><input type="text"
+                                                            class="form-control" name="rep-legal" id="rep-legal"
+                                                            value="{{ emprendimiento.representante_legal }}">
+                                                        <br>
+                                                        <b>RUT Empresa: </b><input type="text" class="form-control"
+                                                            name="rut-empresa" id="rut-empresa"
+                                                            value="{{ emprendimiento.rut }}">
+                                                        <br>
+                                                        <b>Presencia: </b>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-container="body" data-trigger="focus"
+                                                                    data-toggle="popover" data-placement="bottom"
+                                                                    data-content="Indique los países donde tiene ventas separandolas por comas por ejemplo: Chile, Perú, etc.">?</button
+                                                                    id>
+                                                            </div>
+                                                            <input type="text" class="form-control" name="presencia-emp"
+                                                                id="presencia-emp"
+                                                                value="{{ emprendimiento.presencia }}">
+                                                        </div>
+                                                        <br>
+                                                        <b>Modelo de ingreso: </b>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-container="body" data-trigger="focus"
+                                                                    data-toggle="popover" data-placement="bottom"
+                                                                    data-content="Ingrese el modelo de ingreso de su empresa ej: ventas directa, fee mensual, cobro por suscripción, otro.">?</button
+                                                                    id>
+                                                            </div>
+                                                            <input type="text" class="form-control"
+                                                                name="modelo-ingreso" id="modelo-ingreso"
+                                                                value="{{ emprendimiento.modelo_ingreso }}">
+                                                        </div>
+                                                        <br>
+
+                                                        <b>Startup o Spinoff: </b>&nbsp;&nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="startup-spinoff" id="startup" value="1"
+                                                                {% if emprendimiento.startup_spinoff %}
+                                                                checked="checked" {% endif %}>
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio1">Startup</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="startup-spinoff" id="spinoff" value="0"
+                                                                {% if not emprendimiento.startup_spinoff %}
+                                                                checked="checked" {% endif %}>
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio2">Spinoff</label>
+                                                        </div>
+                                                        <br><br>
+                                                        <b>Patente:
+                                                        </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="patente-emp" id="patente-emp1" value="1"
+                                                                {% if emprendimiento.patente %} checked="checked"
+                                                                {% endif %}>
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio1">Sí</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="patente-emp" id="patente-emp0" value="0"
+                                                                {% if not emprendimiento.patente %} checked="checked"
+                                                                {% endif %}>
+                                                            <label class="form-check-label"
+                                                                for="inlineRadio2">No</label>
+
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+                                        <input type="hidden" name="empId" id="empId" value="{{ emprendimiento.id }}">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <b>Nombre:</b> {{ emprendimiento.nombre }}<br>
+                                    <b>Descripción:</b> {{emprendimiento.descripcion_corta}}<br>
+                                    <b>Ubicación:</b> {{emprendimiento.ubicacion}}<br>
+                                    <b>Año de Creación:</b> {{emprendimiento.ano_creacion}}<br>
+                                    <b>Ingreso a OpenBeauchef:</b> {{emprendimiento.fecha_de_ingreso}}<br>
+                                    <b>Modelo de Negocios: </b> {{emprendimiento.modelo_negocio}}<br>
+                                    <b>Categorías:</b> {{emprendimiento.categoria}}<br>
+                                    <b>Sitios web:</b> <a href="https://{{emprendimiento.sitio_web}}"
+                                        target="_blank">{{emprendimiento.sitio_web}}</a> <br>
+
+                                </div>
+                                <div class="col-lg-5">
+                                    <b>Programa:</b> {{ emprendimiento.programa }}<br>
+                                    <b>Representante Legal:</b> {{ emprendimiento.representante_legal }}<br>
+                                    <b>RUT Empresa:</b> {{ emprendimiento.rut }}<br>
+                                    <b>Número de trabajadores:</b> {{ emprendimiento.numero_trabajadores }}<br>
+                                    <b>Presencia en:</b> {{ emprendimiento.presencia }}<br>
+                                    <b>Modelo de ingreso:</b> {{ emprendimiento.modelo_ingreso }}<br>
+                                    <b>Patente:</b> {% if emprendimiento.patente %} Sí {% else %} No {% endif %}
+                                    <br>
+                                    <b>Startup o Spinoff:</b> {% if emprendimiento.startup_spinoff %}
+                                    Startup {% else %} Spinoff {% endif %} <br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Información general -->
+                </div>
+
+            </div>
+            <!-- Fin primera fila -->
+            <!-- Inicio descripcion del proyecto -->
+            <div class="row">
+
+                <div class="col-lg-11">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary"><button type="button"
+                                    class="btn btn-sm btn-primary" data-container="body" data-trigger="focus"
+                                    data-toggle="popover" data-placement="bottom"
+                                    data-content="Describa con el mayor detalle con el mayor detalle posible su emprendimiento.">?</button>
+                                Descripción del emprendimiento
+                            </h6>
+                            <button
+                                    type="button" style="margin-left: 90%;" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#editarDescripcion">Editar
+                                </button>
+                        </div>
+                        <div class="modal fade" id="editarDescripcion" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Editar descripción</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/ficha/guardar_descripcion/" method="post">
+                                        {% csrf_token %}
+                                        <div class="modal-body"><textarea class="form-control" rows="4" cols="500"
+                                                name="text-descripcion"
+                                                id="text-descripcion">{{ emprendimiento.descripcion_larga }}</textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+                                        <input type="hidden" name="empId" id="empId" value="{{ emprendimiento.id }}">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {{ emprendimiento.descripcion_larga|linebreaks }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Fin descripcion del proyecto -->
+            <!-- Inicio desafio del proyecto -->
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary"><button type="button"
+                                    class="btn btn-sm btn-primary" data-container="body" data-trigger="focus"
+                                    data-toggle="popover" data-placement="bottom"
+                                    data-content="Señale los desafios identificados en el mercado objetivo que usted buscar solucionar con su propuesta de valor.">?</button>
+                                Desafíos
+                            </h6>
+                            <button
+                                    type="button" style="margin-left: 90%;" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#editarDesafios">Editar
+                                </button>
+                        </div>
+                        <div class="modal fade" id="editarDesafios" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Editar desafíos</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" action="/ficha/guardar_desafios/">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <textarea class="form-control" rows="4" cols="59" id="text-desafios"
+                                                name="text-desafios">{{ emprendimiento.desafio_problema }}</textarea>
+                                        </div>
+                                        <input type="hidden" name="empId" id="empId" value="{{ emprendimiento.id }}">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {{ emprendimiento.desafio_problema|linebreaks }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Fin desafio del proyecto -->
+            <!-- Inicio necesidades -->
+            <div class="row">
+
+                <div class="col-lg-11">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary"><button type="button"
+                                    class="btn btn-sm btn-primary" data-container="body" data-trigger="focus"
+                                    data-toggle="popover" data-placement="bottom"
+                                    data-content="Señale las necesidades actuales que tiene para el desarrollo del emprendimiento.">?</button>
+                                Necesidades
+                                
+                            </h6>
+                            <button type="button" style="margin-left: 90%;" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#editarNecesidades">Editar
+                                </button>
+                        </div>
+                        <div class="modal fade" id="editarNecesidades" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Editar necesidades</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" action="/ficha/guardar_necesidades/">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <textarea class="form-control" rows="4" cols="59" id="text-necesidades"
+                                                name="text-necesidades">{{ emprendimiento.necesidades }}</textarea>
+                                        </div>
+                                        <input type="hidden" name="empId" id="empId" value="{{ emprendimiento.id }}">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {{ emprendimiento.necesidades|linebreaks }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Fin necesidades -->
+            <!-- Inicio actividades -->
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Actividades</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Actividad</th>
+                                            <th>Fecha inicio</th>
+                                            <th>Fecha término</th>
+                                            <th>Lugar</th>
+                                            <th>Tipo</th>
+                                            <th>Asistencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Actividad</th>
+                                            <th>Fecha inicio</th>
+                                            <th>Fecha término</th>
+                                            <th>Lugar</th>
+                                            <th>Tipo</th>
+                                            <th>Asistencia</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for a in actividades %}
+                                            {% if a.invitado %}
+                                                <tr>
+                                                    <td>{{ a.actividad.nombre }}</td>
+                                                    <td>{{ a.actividad.fecha_inicial }}</td>
+                                                    <td>{{ a.actividad.fecha_termino }}</td>
+                                                    <td>{{ a.actividad.lugar }}</td>
+                                                    <td>{{ a.actividad.tipo }}</td>
+                                                    {% if a.estado %}
+                                                    <td>Si</td>
+                                                    {% else %}
+                                                    <td>No</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        
+                                        {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin actividades -->
+            <!-- Inicio reportes -->
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Reportes</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-tabs" id="tabReportes" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="ventas-tab" data-toggle="tab" href="#ventas"
+                                        role="tab" aria-controls="ventas" aria-selected="true">Ventas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="utilidades-tab" data-toggle="tab" href="#utilidades"
+                                        role="tab" aria-controls="utilidades" aria-selected="false">Utilidades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="clientes-tab" data-toggle="tab" href="#clientes" role="tab"
+                                        aria-controls="clientes" aria-selected="false">Número de
+                                        clientes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trabajadores-tab" data-toggle="tab" href="#trabajadores"
+                                        role="tab" aria-controls="trabajadores" aria-selected="false">Trabajadores</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inversiones-tab" data-toggle="tab" href="#inversiones"
+                                        role="tab" aria-controls="inversiones" aria-selected="false">Capital
+                                        levantado</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inversiones-tab" data-toggle="tab" href="#inversiones"
+                                        role="tab" aria-controls="inversiones" aria-selected="false">Assesment</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pestanaReportes">
+                                <div class="tab-pane fade show active" id="ventas" role="tabpanel"
+                                    aria-labelledby="ventas-tab">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <div class="chart-area">
+                                                <canvas id="myAreaChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="utilidades" role="tabpanel"
+                                    aria-labelledby="utilidades-tab">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <div class="chart-bar">
+                                                <canvas id="myBarChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="clientes" role="tabpanel" aria-labelledby="clientes-tab">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <div class="chart-bar">
+                                                <canvas id="myPieChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="trabajadores" role="tabpanel"
+                                    aria-labelledby="trabajadores-tab">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <table class="table table-bordered" id="actividadesTable" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Cargo</th>
+                                                        <th>Profesión</th>
+                                                        <th>Sueldo</th>
+                                                        <th>Tipo</th>
+                                                        <th>Hora Dedicadas</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Cargo</th>
+                                                        <th>Profesión</th>
+                                                        <th>Sueldo</th>
+                                                        <th>Tipo</th>
+                                                        <th>Hora Dedicadas</th>
+                                                    </tr>
+                                                </tfoot>
+                                                <tbody>
+
+
+                                                    {% for t in trabajadores %}
+                                                    <tr>
+
+                                                        <td>{{ t.nombres }} {{t.apellidos}}</td>
+                                                        <td>{{ t.rol }}</td>
+                                                        <td>{{ t.profesion}}</td>
+                                                        <td>{{ t.sueldo }}</td>
+                                                        <td>{{ t.tipo_contrato }}</td>
+                                                        <td>{{ t.horas_dedicadas }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    </tr>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin reportes -->
+            <!-- Inicio añadir informacion -->
+            <div class="row">
+                <div class="col-lg-11">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Añadir Información</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="accordionExample">
+                                <!-- Nuevo trabajador -->
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                data-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                Nuevo Trabajador
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <form method="post"
+                                                action="/ficha/{{ emprendimiento.id }}/nuevo_trabajador/">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Nombre:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Apellido:</b><br>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="nombre-trabajador"></label>
+                                                        <input required type="text" class="form-control"
+                                                            name="nombre-trabajador" id="nombre-trabajador">
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="apellido-trabajador"></label>
+                                                        <input required type="text" class="form-control"
+                                                            name="apellido-trabajador" id="apellido-trabajador">
+                                                        <br>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>RUT:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Fecha Nacimiento:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="rut-trabajador"></label>
+                                                        <input required type="text" class="form-control"
+                                                            name="rut-trabajador" id="rut-trabajador">
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="nacimiento-trabajador"></label>
+                                                        <input required type="date" min="1930-01-01" class="form-control"
+                                                            name="nacimiento-trabajador" id="nacimiento-trabajador">
+                                                            <p style="color:red"></p>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Género:</b><br>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio5"
+                                                                name="genero-trabajador" class="custom-control-input"
+                                                                value="Hombre">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio5">Hombre</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio6"
+                                                                name="genero-trabajador" class="custom-control-input"
+                                                                value="Mujer">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio6">Mujer</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio7"
+                                                                name="genero-trabajador" class="custom-control-input"
+                                                                value="Sin especificar">
+                                                            <label class="custom-control-label" for="customRadio7">Sin
+                                                                especificar</label>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Profesión:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Cargo:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="profesion-trabajador"></label>
+                                                        <input required type="text" class="form-control"
+                                                            name="profesion-trabajador" id="profesion-trabajador">
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="cargo-trabajador"></label>
+                                                        <input required type="text" class="form-control"
+                                                            name="cargo-trabajador" id="cargo-trabajador">
+                                                        <br>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Tipo de Contrato:</b><br>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio1"
+                                                                name="contrato-trabajador" class="custom-control-input"
+                                                                value="Contrato">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio1">Contrato</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio2"
+                                                                name="contrato-trabajador" class="custom-control-input"
+                                                                value="Honorario">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio2">Honorario</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio3"
+                                                                name="contrato-trabajador" class="custom-control-input"
+                                                                value="Sin contrato">
+                                                            <label class="custom-control-label" for="customRadio3">Sin
+                                                                contrato</label>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Horas dedicadas:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Sueldo:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="horas-trabajador"></label>
+                                                        <input required type="number" class="form-control"
+                                                            name="horas-trabajador" id="horas-trabajador">
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="sueldo-trabajador"></label>
+                                                        <input required type="number" class="form-control"
+                                                            name="sueldo-trabajador" id="sueldo-trabajador">
+                                                        <br>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Equity (%):</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label for="equity-trabajador"></label>
+                                                        <input required type="number" class="form-control"
+                                                            name="equity-trabajador" id="equity-trabajador" min="0"
+                                                            max="100">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Vínculo UChile</b><br>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio8"
+                                                                name="vinculo-uchile" class="custom-control-input"
+                                                                value="Alumno pregrado">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio8">Alumno pregrado</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio9"
+                                                                name="vinculo-uchile" class="custom-control-input"
+                                                                value="Alumno postgrado">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio9">Alumno postgrado</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio10"
+                                                                name="vinculo-uchile" class="custom-control-input"
+                                                                value="Ex alumno">
+                                                            <label class="custom-control-label" for="customRadio10">Ex
+                                                                alumno</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio11"
+                                                                name="vinculo-uchile" class="custom-control-input"
+                                                                value="Docente">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio11">Docente</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio12"
+                                                                name="vinculo-uchile" class="custom-control-input"
+                                                                value="Funcionario">
+                                                            <label class="custom-control-label"
+                                                                for="customRadio12">Funcionario</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="customRadio13"
+                                                                name="vinculo-uchile" class="custom-control-input"
+                                                                value="Sin vínculo">
+                                                            <label class="custom-control-label" for="customRadio13">Sin
+                                                                vínculo</label>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Facultad UChile</b>
+                                                        <label for="facultad-uchile"></label>
+                                                        <select required class="form-control" name="facultad-uchile"
+                                                            id="facultad-uchile">
+                                                            <option value="No aplica"> No aplica </option>
+                                                            <option value="Arquitectura y Urbanismo">
+                                                                Arquitectura y Urbanismo
+                                                            </option>
+                                                            <option value="Artes">
+                                                                Artes
+                                                            </option>
+                                                            <option value="Ciencias Físicas y Matemáticas">
+                                                                Ciencias Físicas y Matemáticas
+                                                            </option>
+                                                            <option value="Economía y Negocios">
+                                                                Economía y Negocios
+                                                            </option>
+                                                            <option value="Ciencias">
+                                                                Ciencias
+                                                            </option>
+                                                            <option value="Ciencias Agronómicas">
+                                                                Ciencias Agronómicas
+                                                            </option>
+                                                            <option
+                                                                value="Ciencias Forestales y de la Conservación de la Naturaleza">
+                                                                Ciencias Forestales y de la
+                                                                Conservación de la Naturaleza
+                                                            </option>
+                                                            <option value="Ciencias Químicas y Farmaceúticas">
+                                                                Ciencias Químicas y
+                                                                Farmaceúticas
+                                                            </option>
+                                                            <option value="Ciencias Sociales">
+                                                                Ciencias Sociales
+                                                            </option>
+                                                            <option value="Ciencias Veterinarias y Pecuarias">
+                                                                Ciencias Veterinarias y
+                                                                Pecuarias
+                                                            </option>
+                                                            <option value="Derecho">Derecho</option>
+                                                            <option value="Filosofía y Humanidades">
+                                                                Filosofía y Humanidades
+                                                            </option>
+                                                            <option value="Medicina">
+                                                                Medicina
+                                                            </option>
+                                                            <option value="Odontología">
+                                                                Odontología
+                                                            </option>
+                                                            <option value="Instituto de Asuntos Públicos">
+                                                                Instituto de Asuntos Públicos
+                                                            </option>
+                                                            <option value="Instituto de Comunicación e Imagen">
+                                                                Instituto de Comunicación e
+                                                                Imagen
+                                                            </option>
+                                                            <option value="Instituto de Estudios Internacionales">
+                                                                Instituto de Estudios
+                                                                Internacionales
+                                                            </option>
+                                                            <option
+                                                                value="Instituto de Nutrición y Tecnología de los Alimentos">
+                                                                Instituto de Nutrición y
+                                                                Tecnología de los Alimentos
+                                                            </option>
+                                                        </select>
+                                                        <br>
+                                                        <input type="hidden" name="empId" id="empId"
+                                                            value="{{ emprendimiento.id }}">
+                                                        <button type="submit" class="btn btn-primary">Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Nuevo Trabajador -->
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                Nueva Venta
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <form method="post" action="/ficha/{{ emprendimiento.id }}/nueva_venta/">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Monto:</b><br>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <b>Mes:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Año:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="monto-venta"></label>
+                                                        <input required type="text" class="form-control"
+                                                            name="monto-venta" id="monto-venta">
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <label for="mes-venta"></label>
+                                                        <select required class="form-control" name="mes-venta"
+                                                            id="mes-venta">
+                                                            <option value="Enero">Enero</option>
+                                                            <option value="Febrero">Febrero</option>
+                                                            <option value="Marzo">Marzo</option>
+                                                            <option value="Abril">Abril</option>
+                                                            <option value="Mayo">Mayo</option>
+                                                            <option value="Junio">Junio</option>
+                                                            <option value="Julio">Julio</option>
+                                                            <option value="Agosto">Agosto</option>
+                                                            <option value="Septiembre">Septiembre</option>
+                                                            <option value="Octubre">Octubre</option>
+                                                            <option value="Noviembre">Noviembre</option>
+                                                            <option value="Diciembre">Diciembre</option>
+                                                        </select>
+                                                        <br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="ano-venta"></label>
+                                                        <select required class="form-control" name="ano-venta"
+                                                            id="ano-venta">
+                                                            <option value="2019">2019</option>
+                                                            <option value="2020">2020</option>
+                                                            <option value="2021">2021</option>
+                                                            <option value="2022">2022</option>
+                                                            <option value="2023">2023</option>
+                                                        </select>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <input type="hidden" name="empId" id="empId"
+                                                            value="{{ emprendimiento.id }}">
+                                                        <input type="hidden" name="perId" id="perId"
+                                                            value="{{ user.persona.id }}">
+                                                        <button type="submit" class="btn btn-primary">Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingThree">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseThree" aria-expanded="false"
+                                                aria-controls="collapseThree">
+                                                Nuevo Costo
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <form method="post" action="/ficha/{{ emprendimiento.id }}/nuevo_costo/">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Monto:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Mes:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Año:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="monto-costo"></label><input type="number"
+                                                            class="form-control" name="monto-costo"
+                                                            id="monto-costo" required>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <label for="mes-costo"></label>
+                                                        <select required class="form-control" name="mes-costo"
+                                                            id="mes-costo">
+                                                            <option value="Enero">Enero</option>
+                                                            <option value="Febrero">Febrero</option>
+                                                            <option value="Marzo">Marzo</option>
+                                                            <option value="Abril">Abril</option>
+                                                            <option value="Mayo">Mayo</option>
+                                                            <option value="Junio">Junio</option>
+                                                            <option value="Julio">Julio</option>
+                                                            <option value="Agosto">Agosto</option>
+                                                            <option value="Septiembre">Septiembre</option>
+                                                            <option value="Octubre">Octubre</option>
+                                                            <option value="Noviembre">Noviembre</option>
+                                                            <option value="Diciembre">Diciembre</option>
+                                                        </select>
+                                                        <br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="ano-costo"></label>
+                                                        <select required class="form-control" name="ano-costo"
+                                                            id="ano-costo">
+                                                            <option value="2019">2019</option>
+                                                            <option value="2020">2020</option>
+                                                            <option value="2021">2021</option>
+                                                            <option value="2022">2022</option>
+                                                            <option value="2023">2023</option>
+                                                        </select>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <input type="hidden" name="empId" id="empId"
+                                                            value="{{ emprendimiento.id }}">
+                                                        <input type="hidden" name="perId" id="perId"
+                                                            value="{{ user.persona.id }}">
+                                                        <button type="submit" class="btn btn-primary">Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingFour">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseFour" aria-expanded="false"
+                                                aria-controls="collapseFour">
+                                                Nueva Patente
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <form method="post" action="/ficha/{{ emprendimiento.id }}/nueva_patente/">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>ID:</b><br>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <b>Nombre:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label>
+                                                            <input required type="text" class="form-control"
+                                                                name="id-patente">
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>
+                                                            <input required type="text" class="form-control"
+                                                                name="nombre-patente">
+                                                        </label>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <input type="hidden" name="empId" id="empId"
+                                                            value="{{ emprendimiento.id }}">
+                                                        <input type="hidden" name="perId" id="perId"
+                                                            value="{{ user.persona.id }}">
+                                                        <button type="submit" class="btn btn-primary">Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingFive">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseFive" aria-expanded="false"
+                                                aria-controls="collapseFive">
+                                                Nueva Inversión
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <form method="post"
+                                                action="/ficha/{{ emprendimiento.id }}/nueva_inversion/">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Monto:</b><br>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <b>Mes:</b><br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <b>Año:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="monto-inversion"></label><input required
+                                                            type="number"class="form-control"
+                                                            name="monto-inversion" id="monto-inversion">
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <label for="mes-inversion"></label>
+                                                        <select required class="form-control" name="mes-inversion"
+                                                            id="mes-inversion">
+                                                            <option value="Enero">Enero</option>
+                                                            <option value="Febrero">Febrero</option>
+                                                            <option value="Marzo">Marzo</option>
+                                                            <option value="Abril">Abril</option>
+                                                            <option value="Mayo">Mayo</option>
+                                                            <option value="Junio">Junio</option>
+                                                            <option value="Julio">Julio</option>
+                                                            <option value="Agosto">Agosto</option>
+                                                            <option value="Septiembre">Septiembre</option>
+                                                            <option value="Octubre">Octubre</option>
+                                                            <option value="Noviembre">Noviembre</option>
+                                                            <option value="Diciembre">Diciembre</option>
+                                                        </select>
+                                                        <br>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <label for="ano-inversion"></label>
+                                                        <select required class="form-control" name="ano-inversion"
+                                                            id="ano-inversion">
+                                                            <option value="2019">2019</option>
+                                                            <option value="2020">2020</option>
+                                                            <option value="2021">2021</option>
+                                                            <option value="2022">2022</option>
+                                                            <option value="2023">2023</option>
+                                                        </select>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Tipo de Inversión</b><br>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="inversionPublica"
+                                                                name="tipo-inversion" class="custom-control-input"
+                                                                value="Publica">
+                                                            <label class="custom-control-label"
+                                                                for="inversionPublica">Pública</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input required type="radio" id="inversionPrivada"
+                                                                name="tipo-inversion" class="custom-control-input"
+                                                                value="Privada">
+                                                            <label class="custom-control-label"
+                                                                for="inversionPrivada">Privada</label>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <b>Nombre organización:</b><br>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <b>Nombre fondo:</b><br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>
+                                                            <input required type="text" class="form-control"
+                                                                name="nombre-organizacion">
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>
+                                                            <input required type="text" class="form-control"
+                                                                name="nombre-fondo">
+                                                        </label>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-1">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <input type="hidden" name="empId" id="empId"
+                                                            value="{{ emprendimiento.id }}">
+                                                        <input type="hidden" name="perId" id="perId"
+                                                            value="{{ user.persona.id }}">
+                                                        <button type="submit" class="btn btn-primary">Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if user.persona.rol != '2'  %}
+                                <div class="card">
+                                    <div class="card-header" id="headingSix">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseSix" aria-expanded="false"
+                                                aria-controls="collapseSix">
+                                                Nuevo Diagnóstico
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
+                                        data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div id="accordion">
+                                                <form method="post"
+                                                action="/ficha/{{ emprendimiento.id }}/nuevo_assesment/">
+                                                {% csrf_token %}
+                                                <div class="card">
+                                                    <div class="card-header" id="assesHeadingOne">
+                                                      <h5 class="mb-0">
+                                                        <a class="btn btn-link" data-toggle="collapse" data-target="#assesCollapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                          Equipo
+                                                        </a>
+                                                      </h5>
+                                                    </div>
+                                                
+                                                    <div id="assesCollapseOne" class="collapse" aria-labelledby="assesHeadingOne" data-parent="#accordion">
+                                                      <div class="card-body">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Dedicación del equipo al negocio
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="equipo-1"></label>
+                                                                <select required class="form-control form-control-sm"
+                                                                    name="equipo-1" id="equipo-1">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Balance del equipo emprendedor
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="equipo-2"></label>
+                                                                <select required class="form-control form-control-sm"
+                                                                    name="equipo-2" id="equipo-2">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Nivel de formación
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="equipo-3"></label>
+                                                                <select required class="form-control form-control-sm"
+                                                                    name="equipo-3" id="equipo-3">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Experiencia relevante para el negocio,
+                                                                        conocimiento de la industria
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="equipo-4"></label>
+                                                                <select required class="form-control form-control-sm"
+                                                                    name="equipo-4" id="equipo-4">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Experiencia previa en el desarrollo de
+                                                                        emprendimientos
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="equipo-5"></label><select
+                                                                    class="form-control form-control-sm" name="equipo-5"
+                                                                    id="equipo-5">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Anotaciones sobre "Capacidad y competencias del
+                                                                        equipo emprendedor"
+                                                                    </font>
+                                                                    <br><br>
+                                                                    <textarea class="form-control" rows="4" name="equipo-nota"
+                                                                        cols="59"></textarea>
+                                                                </ul>
+        
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="card">
+                                                    <div class="card-header" id="assesHeadingTwo">
+                                                      <h5 class="mb-0">
+                                                        <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#assesCollapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                          Mercado
+                                                        </a>
+                                                      </h5>
+                                                    </div>
+                                                    <div id="assesCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                      <div class="card-body">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Tamaño de mercado
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="mercado-1"></label><select
+                                                                    class="form-control form-control-sm" name="mercado-1"
+                                                                    id="mercado-1">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Acceso al mercado
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="mercado-2"></label><select
+                                                                    class="form-control form-control-sm" name="mercado-2"
+                                                                    id="mercado-2">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Tendencias de crecimiento
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="mercado-3"></label><select
+                                                                    class="form-control form-control-sm" name="mercado-3"
+                                                                    id="mercado-3">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Necesidad insatisfecha (oportunidad de negocio)
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="mercado-4"></label><select
+                                                                    class="form-control form-control-sm" name="mercado-4"
+                                                                    id="mercado-4">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Barreras de entrada
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="mercado-5"></label><select
+                                                                    class="form-control form-control-sm" name="mercado-5"
+                                                                    id="mercado-5">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Anotaciones sobre "Oportunidad de mercado"
+                                                                    </font>
+                                                                    <br><br>
+                                                                    <textarea class="form-control" rows="4" cols="59"
+                                                                        name="mercado-nota" id="equipo-6"></textarea>
+                                                                </ul>
+        
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="card">
+                                                    <div class="card-header" id="headingThree">
+                                                      <h5 class="mb-0">
+                                                        <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#assesCollapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                          Modelo de Negocios
+                                                        </a>
+                                                      </h5>
+                                                    </div>
+                                                    <div id="assesCollapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                      <div class="card-body">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Claridad en los procesos (producción,
+                                                                        comercialización, cobranza, adquicisiones)
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="modelo-1"></label><select
+                                                                    class="form-control form-control-sm" name="modelo-1"
+                                                                    id="modelo-1">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Tiempo al mercado de los productos/servicios
+                                                                        (time to market)
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="modelo-2"></label><select
+                                                                    class="form-control form-control-sm" name="modelo-2"
+                                                                    id="modelo-2">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Escalabilidad del negocio
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="modelo-3"></label><select
+                                                                    class="form-control form-control-sm" name="modelo-3"
+                                                                    id="modelo-3">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Estrategia comercial global del negocios
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="modelo-4"></label><select
+                                                                    class="form-control form-control-sm" name="modelo-4"
+                                                                    id="modelo-4">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Sustentabilidad del modelo de negocios
+                                                                    </font>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <label for="modelo-5"></label><select
+                                                                    class="form-control form-control-sm" name="modelo-5"
+                                                                    id="modelo-5">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="7">7</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="9">9</option>
+                                                                    <option value="10">10</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-1">
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <ul>
+                                                                    <font size="3">
+                                                                        Anotaciones sobre "Modelo de negocios"
+                                                                    </font>
+                                                                    <br><br>
+                                                                    <textarea class="form-control" rows="4" cols="59"
+                                                                        name="modelo-nota" id="modelo-6"></textarea>
+                                                                </ul>
+        
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="card">
+                                                      <div class="card-header" id="assesHeadingTwo">
+                                                        <h5 class="mb-0">
+                                                          <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#assesCollapseFour" aria-expanded="false" aria-controls="collapseTwo">
+                                                            Tecnología
+                                                          </a>
+                                                        </h5>
+                                                      </div>
+                                                      <div id="assesCollapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Ventaja competitiva de los productos/servicios
+                                                                            (grado de diferenciación)
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="tecnologia-1"></label><select
+                                                                        class="form-control form-control-sm" name="tecnologia-1"
+                                                                        id="tecnologia-1">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Factibilidad industrial
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="tecnologia-2"></label><select
+                                                                        class="form-control form-control-sm" name="tecnologia-2"
+                                                                        id="tecnologia-2">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Variedad de campos de aplicación
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="tecnologia-3"></label><select
+                                                                        class="form-control form-control-sm" name="tecnologia-3"
+                                                                        id="tecnologia-3">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Propiedad intelectual (patente/know how)
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="tecnologia-4"></label><select
+                                                                        class="form-control form-control-sm" name="tecnologia-4"
+                                                                        id="tecnologia-4">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Estado de desarrollo tecnológico
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="tecnologia-5"></label><select
+                                                                        class="form-control form-control-sm" name="tecnologia-5"
+                                                                        id="tecnologia-5">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Anotaciones sobre Diferenciación: Tecnología /
+                                                                            Legal
+                                                                        </font>
+                                                                        <br><br>
+                                                                        <textarea class="form-control" rows="4" cols="59"
+                                                                            name="tecnologia-nota" id="tecnologia-6"></textarea>
+                                                                    </ul>
+            
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div class="card">
+                                                      <div class="card-header" id="assesHeadingTwo">
+                                                        <h5 class="mb-0">
+                                                          <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#assesCollapseFive" aria-expanded="false" aria-controls="collapseTwo">
+                                                            Finanzas
+                                                          </a>
+                                                        </h5>
+                                                      </div>
+                                                      <div id="assesCollapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                        <div class="card-body">
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Proyecciones realistas
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="finanzas-1"></label><select
+                                                                        class="form-control form-control-sm" name="finanzas-1"
+                                                                        id="finanzas-1">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Flujo de caja (VAN, TIR, Payback)
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="finanzas-2"></label><select
+                                                                        class="form-control form-control-sm" name="finanzas-2"
+                                                                        id="finanzas-2">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Retorno de inversión a 5 años
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="finanzas-3"></label><select
+                                                                        class="form-control form-control-sm" name="finanzas-3"
+                                                                        id="finanzas-3">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Capital requerido versus valor del negocio
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="finanzas-4"></label><select
+                                                                        class="form-control form-control-sm" name="finanzas-4"
+                                                                        id="finanzas-4">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Estrategia de salida por inversionistas
+                                                                        </font>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <label for="finanzas-5"></label><select
+                                                                        class="form-control form-control-sm" name="finanzas-5"
+                                                                        id="finanzas-5">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                    </select>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-1">
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <ul>
+                                                                        <font size="3">
+                                                                            Anotaciones sobre "Finanzas"
+                                                                        </font>
+                                                                        <br><br>
+                                                                        <textarea class="form-control" rows="4" cols="59"
+                                                                            name="finanzas-nota" id="finanzas-6"></textarea>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-1">
+                                                            <br>
+                                                            <input type="hidden" name="empId" id="empId"
+                                                                value="{{ emprendimiento.id }}">
+                                                            <input type="hidden" name="perId" id="perId"
+                                                                value="{{ user.persona.id }}">
+                                                            <button type="submit" class="btn btn-primary">Guardar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                
+                                              </div>
+
+                                        </div>
+
+                                        
+                                        
+                                    </div>
+                                    
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin añadir informacion -->
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Open Beauchef 2020</span>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Quieres cerrar sesión?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Selecciona "Salir" para cerrar la sesión.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-primary" href="{% url 'personas:salir' %}">Salir</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+
+
+
+{% block specific_js %}
+<script>
+    $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
+        $("#success-alert").slideUp(500);
+    });
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+    });
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+</script>
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+<script src="{% static 'js/demo/chart-bar-demo.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+{% endblock specific_js %}
