@@ -2,7 +2,7 @@ Django==2.2.6
 psycopg2==2.8.3
 pytz==2019.2
 sqlparse==0.3.0
-Pillow==6.2.0
+Pillow==9.0.1
 django-excel==0.0.10
 pyexcel-xlsx==0.5.7
 pyexcel-handsontable==0.0.2
